@@ -41,9 +41,6 @@ vim.o.scrolloff = 10
 
 vim.o.confirm = true
 
--- [[ Enable ty language server ]]
-vim.lsp.enable 'ty'
-
 -- [[ Keymaps ]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
@@ -334,8 +331,7 @@ require('lazy').setup({
       local capabilities = require('blink.cmp').get_lsp_capabilities()
       local servers = {
         gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
+        ty = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         lua_ls = {
           settings = {
@@ -350,7 +346,9 @@ require('lazy').setup({
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'stylua',
+        'ruff',
+        'ty',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -400,7 +398,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = { 'ruff' },
+        python = { 'ruff_format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
       },
